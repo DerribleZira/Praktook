@@ -1,0 +1,112 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def main():
+    ATTEMPTS = [0]
+    MAX_ATTEMPT = 3
+    USERNAME = "1"
+    PASSWORD = "1"
+
+    def show_buy():
+        def buy():
+            
+            nama = nama_pembeli.get()
+            barang = nama_barang.get()
+            jumlah = jumlah_produk.get()
+            Harga = Harga_produk.get()
+            uang = uang_pembeli.get()
+
+            if not (nama and barang and jumlah.isdigit() and Harga.isdigit() and uang.isdigit()):
+                messagebox.showwarning("Warning", "Isi data dengan benar!")
+                return
+            
+            jumlah = int(jumlah)
+            Harga = int(Harga)
+            uang = int(uang)
+            total = Harga * jumlah
+            kembalian = uang - total
+
+            if kembalian < 0:
+                messagebox.showwarning("Warning", "Uang pembeli kurang.")
+                return
+
+            invoice = f"""---INVOICE---
+    Nama Pembeli: {nama}
+    Jumlah Barang: {jumlah}
+    Harga: {Harga}
+    Total: {total}
+    Tunai: {uang}
+    kembali: {kembalian}
+
+    Terimakasih Telah Berbelanja! :)
+    """
+
+            messagebox.showinfo("INVOICE", invoice)
+        
+        buy_page = tk.Tk()
+        buy_page.title("Form pembelian")
+        buy_page.geometry("500x400")
+        buy_page.resizable(False, False)
+        buy_page.configure(bg="white")
+
+        tk.Label(buy_page, text="Nama Pembeli:", fg="black").pack(pady=5)
+        nama_pembeli = tk.Entry(buy_page)
+        nama_pembeli.pack(pady=5)
+        
+        tk.Label(buy_page, text="Nama Barang:", fg="black").pack(pady=5)
+        nama_barang = tk.Entry(buy_page)
+        nama_barang.pack(pady=5)
+
+        tk.Label(buy_page, text="Jumlah Produk (Angka):", fg="black").pack(pady=5)
+        jumlah_produk = tk.Entry(buy_page)
+        jumlah_produk.pack(pady=5)
+
+        tk.Label(buy_page, text="Harga Produk:", fg="black").pack(pady=5)
+        Harga_produk = tk.Entry(buy_page)
+        Harga_produk.pack(pady=5)
+
+        tk.Label(buy_page, text="Uang Pembeli:", fg="black").pack(pady=5)
+        uang_pembeli = tk.Entry(buy_page)
+        uang_pembeli.pack(pady=5)
+
+        tk.Button(buy_page, text="Bayar", bg="black", fg="White", command=buy).pack(pady=5)
+
+        buy_page.mainloop()
+    def login():
+
+        username_entry = nama.get()
+        password_entry = password.get()
+
+        if username_entry == USERNAME and password_entry == PASSWORD:
+            messagebox.showinfo("Login successful", f"Login Successful. Hello {username_entry}.")
+            login_page.destroy()
+            show_buy()
+        else:
+            ATTEMPTS[0] += 1
+            REMAININGS = MAX_ATTEMPT - ATTEMPTS[0]
+            if REMAININGS > 0:
+                messagebox.showwarning("Warning", f"Login Failed, You have {REMAININGS} attempts left.")
+            else:
+                messagebox.showerror("Access Denied", "Login Failed.")
+                login_page.destroy()
+
+    login_page = tk.Tk()
+    login_page.title("Login System")
+    login_page.geometry("300x200")
+    login_page.resizable(False, False)
+    login_page.configure(bg="white")
+    
+    tk.Label(login_page, text="Username", fg="black").pack(pady=5)
+    nama = tk.Entry(login_page)
+    nama.pack(pady=5)
+
+    tk.Label(login_page, text="Password", fg="black").pack(pady=5)
+    password = tk.Entry(login_page, show="*")
+    password.pack(pady=5)
+
+    tk.Button(login_page, text="Login", fg="white", bg="black", command=login).pack(pady=5)
+
+    login_page.mainloop()
+
+    
+main()
